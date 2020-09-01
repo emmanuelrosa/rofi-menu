@@ -13,17 +13,18 @@ then
     path=$(echo -n "$@"|cut -d $delimiter -f 2)
 
     # Wizardry to resolve path (~, $HOME, etc) and handle file names with spaces
-    path=$(sh -c "echo -n $path"|sed -e 's/ /\\ /g')
+    path=$(sh -c "echo -n $path")
+    escaped_path=$(sh -c "echo -n $path"|sed -e 's/ /\\ /g')
 
     case "$ftype" in
         txt)
-             exec termite -e "vim $path" >/dev/null ;;
+             exec termite -e "vim $escaped_path" >/dev/null ;;
         pdf)
-             exec zathura $path >/dev/null ;;
+             exec zathura "$path" >/dev/null ;;
         vlc)
-             exec vlc $path >/dev/null ;;
+             exec vlc $escaped_path >/dev/null ;;
         osp)
-             exec openshot-qt $path >/dev/null ;;
+             exec openshot-qt $escaped_path >/dev/null ;;
     esac
 
     exit;
