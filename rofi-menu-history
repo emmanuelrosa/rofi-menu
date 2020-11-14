@@ -18,7 +18,7 @@ then
 
     case "$ftype" in
         txt)
-             exec termite -e "vim $escaped_path" >/dev/null ;;
+             exec alacritty -e "vim $escaped_path" >/dev/null ;;
         pdf)
              exec zathura "$path" >/dev/null ;;
         vlc)
