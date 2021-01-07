@@ -25,6 +25,8 @@ then
              exec vlc $escaped_path >/dev/null ;;
         osp)
              exec openshot-qt $escaped_path >/dev/null ;;
+        img)
+             exec sxiv $escaped_path >/dev/null ;;
     esac
 
     exit;
@@ -40,4 +42,12 @@ else
 
     # OpenShot
     jq 'map(select(.setting == "recent_projects"))|.[0].value' ~/.openshot_qt/openshot.settings|tail -n +2|head -n -1|sed -e 's/^  \"/osp|/' -e 's/\",$//' -e 's/\"$//'
+
+    # sxiv
+    basepath=$HOME/.cache/sxiv
+    for f in `find $basepath`; do 
+        if [[ -f "$f" ]]; then 
+            echo "img|${f#$basepath}"
+        fi 
+    done
 fi

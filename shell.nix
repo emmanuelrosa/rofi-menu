@@ -4,7 +4,7 @@ let
 
   inherit (nixpkgs) pkgs;
 
-  f = { stdenv, makeWrapper, lib, gnused, jq }:
+  f = { stdenv, makeWrapper, lib, gnused, jq, sxiv }:
       stdenv.mkDerivation {
         pname = "rofi-menu";
         version = "0.1.0.0";
@@ -17,7 +17,7 @@ let
         '';
 
         postFixup = ''
-          wrapProgram $out/bin/rofi-menu-history --prefix PATH : ${lib.makeBinPath [ gnused jq ]}
+          wrapProgram $out/bin/rofi-menu-history --prefix PATH : ${lib.makeBinPath [ gnused jq sxiv ]}
         '';
 
         meta = {
