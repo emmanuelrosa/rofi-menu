@@ -1,0 +1,23 @@
+#! /bin/bash
+
+# NAME:    rofi-menu-shutdown
+# PURPOSE: Implements a rofi mode which lists the options to either log out of the Xsession (BSPWM window manager). shut down, or reboot.
+# EXAMPLE: rofi -show shutdown -modi shutdown:rofi-menu-shutdown
+
+if [ "$@" ]
+then
+    case "$@" in
+        logout)
+             exec bspc quit ;;
+        shutdown)
+             exec shutdown -P now ;;
+        reboot)
+             exec shutdown -r now ;;
+    esac
+
+    exit;
+else
+    echo logout
+    echo shutdown
+    echo reboot
+fi

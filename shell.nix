@@ -7,13 +7,14 @@ let
   f = { stdenv, makeWrapper, lib, gnused, jq, sxiv }:
       stdenv.mkDerivation {
         pname = "rofi-menu";
-        version = "0.1.0.0";
+        version = "0.4.0";
         src = ./.;
 
         nativeBuildInputs = [ makeWrapper ];
 
         installPhase = ''
           install -D rofi-menu-history $out/bin/rofi-menu-history
+          install -D rofi-menu-shutdown $out/bin/rofi-menu-shutdown
         '';
 
         postFixup = ''
