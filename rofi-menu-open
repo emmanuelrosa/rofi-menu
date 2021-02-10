@@ -1,0 +1,36 @@
+#! /bin/bash
+
+# NAME:    rofi-menu-open
+# PURPOSE: Implements a rofi mode which lists files in the user's home directory and opens an appropriate application upon selection.
+# EXAMPLE: rofi -show open -modi open:rofi-menu-open
+
+delimiter="|"
+
+if [ "$@" ]
+then
+    path="$@"
+    ftype="${path##*.}"
+
+    # Wizardry to resolve path (~, $HOME, etc) and handle file names with spaces
+    path=$(sh -c "echo -n $path")
+    escaped_path=$(sh -c "echo -n $path"|sed -e 's/ /\\ /g')
+
+    case "$ftype" in
+        txt)
+             exec alacritty -e vim "$path" >/dev/null ;;
+        pdf)
+             exec zathura "$path" >/dev/null ;;
+        mp4 | mkv | mp3)
+             exec vlc "$path" >/dev/null ;;
+        osp)
+             exec openshot-qt $escaped_path >/dev/null ;;
+        png | jpg | jpeg)
+             exec sxiv $escaped_path >/dev/null ;;
+          *)
+             exec notify-send "Unfamiliar with the filetype .${ftype}"
+    esac
+
+    exit;
+else
+    fd -t f . $HOME
+fi
