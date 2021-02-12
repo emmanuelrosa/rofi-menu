@@ -4,33 +4,41 @@
 # PURPOSE: Implements a rofi mode which lists files in the user's home directory and opens an appropriate application upon selection.
 # EXAMPLE: rofi -show open -modi open:rofi-menu-open
 
-delimiter="|"
-
 if [ "$@" ]
 then
     path="$@"
-    ftype="${path##*.}"
-
-    # Wizardry to resolve path (~, $HOME, etc) and handle file names with spaces
-    path=$(sh -c "echo -n $path")
+    fext="${path##*.}"
     escaped_path=$(sh -c "echo -n $path"|sed -e 's/ /\\ /g')
 
-    case "$ftype" in
-        txt)
-             exec alacritty -e vim "$path" >/dev/null ;;
-        pdf)
-             exec zathura "$path" >/dev/null ;;
-        mp4 | mkv | mp3)
-             exec vlc "$path" >/dev/null ;;
+    case "$fext" in
         osp)
-             exec openshot-qt $escaped_path >/dev/null ;;
-        png | jpg | jpeg)
-             exec sxiv $escaped_path >/dev/null ;;
+            exec openshot-qt $escaped_path >/dev/null ;;
           *)
-             exec notify-send "Unfamiliar with the filetype .${ftype}"
+            mimetype=$(file --mime-type -b $path)
+            ftype=$(echo $mimetype | cut -d "/" -f 1)
+
+            case "$ftype" in
+                text)
+                    exec alacritty -e vim "$path" >/dev/null ;;
+                image)
+                    exec sxiv $escaped_path >/dev/null ;;
+                video | audio)
+                    # TODO: Paths with spaces are not working.
+                    exec vlc "$path" >/dev/null ;;
+                application)
+                    fformat=$(echo $mimetype | cut -d "/" -f 2)
+
+                    case "$fformat" in
+                        pdf) 
+                            # TODO: Paths with spaces are not working.
+                            exec zathura "$path" >/dev/null ;;
+                        *)
+                            exec xdg-open "$path" ;;
+                    esac ;;
+            esac ;;
     esac
 
     exit;
 else
-    fd -t f . $HOME
+    fd -t f -H . $HOME
 fi
