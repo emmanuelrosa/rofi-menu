@@ -31,7 +31,7 @@ then
                         pdf) 
                             exec zathura "$path" >/dev/null ;;
                         *)
-                            exec xdg-open "$escaped_path" ;;
+                            exec xdg-open "$escaped_path" >/dev/null;;
                     esac ;;
             esac ;;
     esac

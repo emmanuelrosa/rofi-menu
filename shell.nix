@@ -7,7 +7,7 @@ let
   f = { stdenv, makeWrapper, lib, gnused, jq, sxiv, fd, file, xdg-utils }:
       stdenv.mkDerivation {
         pname = "rofi-menu";
-        version = "0.6.0";
+        version = "0.7.0";
         src = ./.;
 
         nativeBuildInputs = [ makeWrapper ];
