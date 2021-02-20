@@ -14,26 +14,24 @@ then
         osp)
             exec openshot-qt $escaped_path >/dev/null ;;
           *)
-            mimetype=$(file --mime-type -b $path)
+            mimetype=$(file --mime-type -b "$path")
             ftype=$(echo $mimetype | cut -d "/" -f 1)
 
             case "$ftype" in
                 text)
                     exec alacritty -e vim "$path" >/dev/null ;;
                 image)
-                    exec sxiv $escaped_path >/dev/null ;;
+                    exec sxiv "$path" >/dev/null ;;
                 video | audio)
-                    # TODO: Paths with spaces are not working.
                     exec vlc "$path" >/dev/null ;;
                 application)
                     fformat=$(echo $mimetype | cut -d "/" -f 2)
 
                     case "$fformat" in
                         pdf) 
-                            # TODO: Paths with spaces are not working.
                             exec zathura "$path" >/dev/null ;;
                         *)
-                            exec xdg-open "$path" ;;
+                            exec xdg-open "$escaped_path" ;;
                     esac ;;
             esac ;;
     esac
