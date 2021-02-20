@@ -40,5 +40,5 @@ then
 
     exit;
 else
-    fd -t f -H . $HOME
+    fd -t f -H -E .git -E .svn -E .hg . $HOME
 fi
