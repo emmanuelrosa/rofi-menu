@@ -38,5 +38,5 @@ then
 
     exit;
 else
-    fd -t f -H -E .git -E .svn -E .hg . $HOME
+    fd -t f -H -E .git -E .svn -E .hg -E .cache . $HOME
 fi
