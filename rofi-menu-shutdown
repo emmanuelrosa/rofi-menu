@@ -1,19 +1,14 @@
 #! /bin/bash
 
 # NAME:    rofi-menu-shutdown
-# PURPOSE: Implements a rofi mode which lists the options to either log out of the Xsession (BSPWM window manager), Hyprland session, shut down, or reboot.
+# PURPOSE: Implements a rofi mode which lists the options to either log out, shut down, or reboot.
 # EXAMPLE: rofi -show shutdown -modi shutdown:rofi-menu-shutdown
 
 if [ "$@" ]
 then
     case "$@" in
         logout)
-             if [ -z "$WAYLAND_DISPLAY" ]
-             then
-                exec hyprctl dispatch exit
-             else
-                 exec bspc quit
-             fi ;;
+            exec loginctl terminate-session "";;
         shutdown)
              exec shutdown -P now ;;
         reboot)
