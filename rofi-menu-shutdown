@@ -8,7 +8,7 @@ if [ "$@" ]
 then
     case "$@" in
         logout)
-            exec loginctl terminate-session "";;
+            exec loginctl terminate-session $XDG_SESSION_ID;;
         shutdown)
              exec shutdown -P now ;;
         reboot)
